@@ -2,7 +2,7 @@ Author: Ken Cochrane
 Fork of: http://minidetector.googlecode.com
 Fork Description: I reorganized the code, added caching, and made a few tweaks here and there.
 Description: Django middleware and view decorator to detect phones and small-screen devices
-Version: 0.1.4
+Version: 0.1.5
 Last Update: 9/30/2011
 
 Requirements:
