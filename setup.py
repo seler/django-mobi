@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='django-mobi',
-    version='0.1.3',
+    version='0.1.4',
     description='Django middleware and view decorator to detect phones and small-screen devices',
     maintainer='Ken Cochrane',
     maintainer_email='KenCochrane@gmail.com',
@@ -21,6 +21,6 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     packages=['mobi',],
-    package_data={'mobi': ['','*.txt','mobi/search_strings.txt',]},
+    package_data={'mobi': ['mobi/*.txt',]},
     long_description=open('README').read(),
 )
