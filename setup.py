@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='django-mobi',
-    version='0.1.1',
+    version='0.1.2',
     description='Django middleware and view decorator to detect phones and small-screen devices',
     maintainer='Ken Cochrane',
     maintainer_email='KenCochrane@gmail.com',
@@ -23,4 +23,3 @@ setup(
     packages=['mobi',],
     long_description=open('README').read(),
 )
-
