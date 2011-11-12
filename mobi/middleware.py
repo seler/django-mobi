@@ -2,6 +2,19 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from mobi.useragents import search_strings
 
+MOBI_USER_AGENT_IGNORE_LIST = getattr(settings,
+                                        'MOBI_USER_AGENT_IGNORE_LIST', list())
+
+def ignore_user_agent(user_agent):
+    """ compare the useragent from the broswer to the ignore list
+        This is popular if you want a mobile device to not trigger
+        as mobile. For example iPad."""
+    if user_agent:
+        for ua in MOBI_USER_AGENT_IGNORE_LIST:
+            if ua and ua.lower() in user_agent.lower():
+                return True
+    return False
+
 class MobileDetectionMiddleware(object):
     @staticmethod
     def process_request(request):
@@ -31,8 +44,10 @@ class MobileDetectionMiddleware(object):
             s = request.META["HTTP_USER_AGENT"].lower()
             for ua in search_strings:
                 if ua in s:
-                    request.mobile = True
-                    return None
+                    # check if we are ignoring this user agent: (IPad)
+                    if not ignore_user_agent(s):
+                        request.mobile = True
+                        return None
 
         #Otherwise it's not a mobile
         request.mobile = False
@@ -50,11 +65,11 @@ class MobileRedirectMiddleware(object):
     def process_request(self, request):
         do_redirect = False
 
-        user_agent = request.META.get('HTTP_USER_AGENT',None)
+        user_agent = request.META.get('HTTP_USER_AGENT', None)
 
         # mobile browsers are the only people who send this.
-        x_wap = request.META.get('HTTP_X_WAP_PROFILE',None)
-        http_profile = request.META.get('HTTP_PROFILE',None)
+        x_wap = request.META.get('HTTP_X_WAP_PROFILE', None)
+        http_profile = request.META.get('HTTP_PROFILE', None)
 
         if x_wap or http_profile:
             do_redirect = True
@@ -67,7 +82,9 @@ class MobileRedirectMiddleware(object):
                 do_redirect = True
 
         if do_redirect and MOBI_REDIRECT_URL:
-             # tell adaptation services (transcoders and proxies) to not alter the content based on user agent as it's already being managed by this script
+             # tell adaptation services (transcoders and proxies) to not
+             # alter the content based on user agent as it's already being
+             # managed by this script
              # http://mobiforge.com/developing/story/setting-http-headers-advise-transcoding-proxies
              response = HttpResponseRedirect(MOBI_REDIRECT_URL)
              response['Cache-Control'] = 'no-transform'
