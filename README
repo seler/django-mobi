@@ -25,7 +25,7 @@ Then in your view you can check request.mobile - if it's True then treat it like
 
 If you want to have some items not triggered by the middleware (for example iPad) then add a settings called MOBI_USER_AGENT_IGNORE_LIST and add the item to the list.
  
-MOBI_USER_AGENT_IGNORE_LIST = list('ipad')
+MOBI_USER_AGENT_IGNORE_LIST = ['ipad',]
 
 Using the mobi.MobileRedirectMiddleware Middleware
 ---------------------------------------------------
