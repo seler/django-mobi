@@ -1,9 +1,12 @@
 from django.conf import settings
 from django.http import HttpResponseRedirect
-from mobi.useragents import search_strings
+from mobi.useragents import search_strings, load_tablet_strings
 
 MOBI_USER_AGENT_IGNORE_LIST = getattr(settings,
                                         'MOBI_USER_AGENT_IGNORE_LIST', list())
+
+MOBI_DETECT_TABLET = getattr(settings, 'MOBI_DETECT_TABLET', False)
+
 
 def ignore_user_agent(user_agent):
     """ compare the useragent from the broswer to the ignore list
@@ -45,13 +48,34 @@ class MobileDetectionMiddleware(object):
             for ua in search_strings:
                 if ua in s:
                     # check if we are ignoring this user agent: (IPad)
+
                     if not ignore_user_agent(s):
                         request.mobile = True
+                        if MOBI_DETECT_TABLET:
+                            request.tablet = _is_tablet(s)
                         return None
 
         #Otherwise it's not a mobile
         request.mobile = False
         return None
+
+
+def _is_tablet(s):
+    is_tablet = False
+    print s
+    tablet_strings = load_tablet_strings()
+    for ta in tablet_strings:
+        if ta == '__android__not_mobile__':
+            if 'android' in s and not 'mobile' in s:
+                is_tablet = True
+                break
+
+        if ta in s:
+            is_tablet = True
+            #print tablet_strings
+            break
+
+    return is_tablet
 
 #===============================================================================
 class MobileRedirectMiddleware(object):
