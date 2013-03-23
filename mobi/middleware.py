@@ -62,7 +62,6 @@ class MobileDetectionMiddleware(object):
 
 def _is_tablet(s):
     is_tablet = False
-    print s
     tablet_strings = load_tablet_strings()
     for ta in tablet_strings:
         if ta == '__android__not_mobile__':
@@ -72,7 +71,6 @@ def _is_tablet(s):
 
         if ta in s:
             is_tablet = True
-            #print tablet_strings
             break
 
     return is_tablet
