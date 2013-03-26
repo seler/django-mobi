@@ -11,3 +11,4 @@ Contributors
 ============
 
 * Daniel Greenfeld <pydanny@gmail.com>
+* Roman Lyashov <romitch@gmail.com>
