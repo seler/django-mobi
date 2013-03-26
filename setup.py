@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='django-mobi',
-    version='0.1.6',
+    version='0.1.7',
     description='Django middleware and view decorator to detect phones and small-screen devices',
     maintainer='Ken Cochrane',
     maintainer_email='KenCochrane@gmail.com',

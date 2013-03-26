@@ -16,7 +16,7 @@ def load_strings_from_file(cache_key, file_name):
     
     # it wasn't in the cache, get it from the file, then store in the cache
     with open(os.path.join(os.path.dirname(__file__), file_name)) as f:
-        ss = f.readlines()
+        ss = f.read().splitlines()
 
     agents = [s.strip() for s in ss if s and not s.startswith('#')]
     # store to the cache

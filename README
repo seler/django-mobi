@@ -27,6 +27,15 @@ If you want to have some items not triggered by the middleware (for example iPad
  
 MOBI_USER_AGENT_IGNORE_LIST = ['ipad',]
 
+If you want to distinguish tablet devices from phones, then set MOBI_DETECT_TABLET = True and use request.tablet attribute
+
+{% if not request.mobile or request.tablet %}
+	<p>This section enabled only for descktop and tablets</p>
+{% endif %}
+
+
+
+
 Using the mobi.MobileRedirectMiddleware Middleware
 ---------------------------------------------------
 This middleware will scan all incoming requests to see if it is a mobile device, if so it will redirect the request to a different URL. This is good if you want to force all mobile traffic to a mobile only version of your site.
