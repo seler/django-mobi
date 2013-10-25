@@ -1,11 +1,15 @@
 from mobi.useragents import search_strings
 from mobi.middleware import MobileDetectionMiddleware
 
+from functools import wraps
+
+
 def detect_mobile(view):
     """View Decorator that adds a "mobile" attribute to the request which is
        True or False depending on whether the request should be considered
        to come from a small-screen device such as a phone or a PDA"""
 
+    @wraps(view)
     def detected(request, *args, **kwargs):
         MobileDetectionMiddleware.process_request(request)
         return view(request, *args, **kwargs)
