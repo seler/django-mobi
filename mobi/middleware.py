@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from mobi.useragents import search_strings, load_tablet_strings
 
 MOBI_USER_AGENT_IGNORE_LIST = getattr(settings,
-                                        'MOBI_USER_AGENT_IGNORE_LIST', list())
+                                      'MOBI_USER_AGENT_IGNORE_LIST', list())
 
 MOBI_DETECT_TABLET = getattr(settings, 'MOBI_DETECT_TABLET', False)
 
@@ -18,6 +18,7 @@ def ignore_user_agent(user_agent):
                 return True
     return False
 
+
 class MobileDetectionMiddleware(object):
     @staticmethod
     def process_request(request):
@@ -25,21 +26,21 @@ class MobileDetectionMiddleware(object):
            depending on whether the request should be considered to come from a
            small-screen device such as a phone or a PDA"""
 
-        if request.META.has_key("HTTP_X_OPERAMINI_FEATURES"):
+        if "HTTP_X_OPERAMINI_FEATURES" in request.META:
             #Then it's running opera mini. 'Nuff said.
             #Reference from:
             # http://dev.opera.com/articles/view/opera-mini-request-headers/
             request.mobile = True
             return None
 
-        if request.META.has_key("HTTP_ACCEPT"):
+        if "HTTP_ACCEPT" in request.META:
             s = request.META["HTTP_ACCEPT"].lower()
             if 'application/vnd.wap.xhtml+xml' in s:
                 # Then it's a wap browser
                 request.mobile = True
                 return None
 
-        if request.META.has_key("HTTP_USER_AGENT"):
+        if "HTTP_USER_AGENT" in request.META:
             # This takes the most processing. Surprisingly enough, when I
             # Experimented on my own machine, this was the most efficient
             # algorithm. Certainly more so than regexes.
@@ -75,15 +76,14 @@ def _is_tablet(s):
 
     return is_tablet
 
-#===============================================================================
+
 class MobileRedirectMiddleware(object):
-    
-    # Add MOBI_REDIRECT_URL to your settings.py file with a fully qualified 
+
+    # Add MOBI_REDIRECT_URL to your settings.py file with a fully qualified
     # url that you want to redirect mobile clients too.
     # i.e. http://example.mobi
     MOBI_REDIRECT_URL = getattr(settings, 'MOBI_REDIRECT_URL', None)
 
-    #---------------------------------------------------------------------------
     def process_request(self, request):
         do_redirect = False
 
@@ -103,15 +103,14 @@ class MobileRedirectMiddleware(object):
             if is_mobile:
                 do_redirect = True
 
-        if do_redirect and MOBI_REDIRECT_URL:
+        if do_redirect and self.MOBI_REDIRECT_URL:
              # tell adaptation services (transcoders and proxies) to not
              # alter the content based on user agent as it's already being
              # managed by this script
              # http://mobiforge.com/developing/story/setting-http-headers-advise-transcoding-proxies
-             response = HttpResponseRedirect(MOBI_REDIRECT_URL)
-             response['Cache-Control'] = 'no-transform'
-             response['Vary'] = 'User-Agent, Accept'
-             return response
+            response = HttpResponseRedirect(self.MOBI_REDIRECT_URL)
+            response['Cache-Control'] = 'no-transform'
+            response['Vary'] = 'User-Agent, Accept'
+            return response
         else:
             return None
-
