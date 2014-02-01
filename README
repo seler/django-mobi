@@ -19,7 +19,7 @@ Using the mobi.MobileDetectionMiddleware Middleware
 ---------------------------------------------------
 This middleware will scan all incoming requests to see if it is a mobile device. If it is it will set the request.mobile property to True.
 
-To use all you have to do is add mobi.MobileDetectionMiddleware to your MIDDLEWARE_CLASSES tuple in your settings.py
+To use all you have to do is `add mobi.middleware.MobileDetectionMiddleware` to your `MIDDLEWARE_CLASSES` tuple in your `settings.py`
 
 Then in your view you can check request.mobile - if it's True then treat it like a small screen device. If it's False then it's probably a desktop browser, or a spider or something else.
 
@@ -36,11 +36,11 @@ If you want to distinguish tablet devices from phones, then set MOBI_DETECT_TABL
 
 
 
-Using the mobi.MobileRedirectMiddleware Middleware
+Using the mobi.middleware.MobileRedirectMiddleware Middleware
 ---------------------------------------------------
 This middleware will scan all incoming requests to see if it is a mobile device, if so it will redirect the request to a different URL. This is good if you want to force all mobile traffic to a mobile only version of your site.
 
-To use all you have to do is add mobi.MobileRedirectMiddleware to your MIDDLEWARE_CLASSES tuple in your settings.py, and also add MOBI_REDIRECT_URL = "http://example.mobi" where http://example.mobi is the website you want to redirect all mobile traffic.
+To use all you have to do is add `mobi.middleware.MobileRedirectMiddleware` to your `MIDDLEWARE_CLASSES` tuple in your `settings.py`, and also add MOBI_REDIRECT_URL = "http://example.mobi" where http://example.mobi is the website you want to redirect all mobile traffic.
 
 
 Not using the Middleware
