@@ -15,7 +15,7 @@ How to use:
 Using django-mobi is very simple. Simply place the mobi package into your project's path, and then do one of the following:
 
 
-Using the mobi.MobileDetectionMiddleware Middleware
+Using the mobi.middleware.MobileDetectionMiddleware Middleware
 ---------------------------------------------------
 This middleware will scan all incoming requests to see if it is a mobile device. If it is it will set the request.mobile property to True.
 
