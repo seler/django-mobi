@@ -58,6 +58,7 @@ class MobileDetectionMiddleware(object):
 
         #Otherwise it's not a mobile
         request.mobile = False
+        request.tablet = False
         return None
 
 
